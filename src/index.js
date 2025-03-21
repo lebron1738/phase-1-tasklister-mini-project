@@ -1,24 +1,46 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const taskForm = document.getElementById("create-task-form");
-  const taskList = document.getElementById("tasks");
 
-  taskForm.addEventListener("submit", function (deed) {
-    deed.preventDefault();
+const newTaskForm = document.getElementById("create-task-form");
+const taskList = [];
 
-    const newTaskDescription = document.getElementById("new-task-description");
-    if (newTaskDescription.value.trim() !== "") {
-      const newTask = document.createElement("li");
-      newTask.innerText = newTaskDescription.value;
+newTaskForm.addEventListener("submit", (event) => {
 
-      const deleteButton = document.createElement("button");
-      deleteButton.innerText = "x";
-      deleteButton.addEventListener("click", () => {
-        taskList.removeChild(newTask);
-      });
-      newTask.appendChild(deleteButton);
+  event.preventDefault();
 
-      taskList.appendChild(newTask);
-      newTaskDescription.value = "";
-    }
-  });
+  const input = document.getElementById("new-task-description");
+
+  taskList.push(input.value.trim());
+
+  newTaskForm.reset();
+
+  console.log(taskList);
+
+  toDoList(taskList);
 });
+
+function toDoList(todo) {
+  const tasks = document.querySelector("#tasks");
+
+  tasks.innerHTML = "";
+
+  todo.forEach((toDo) => {
+    console.log(toDo);
+
+    const li = document.createElement("li");
+    li.textContent = toDo;
+
+    const deleteButton = document.createElement("button");
+    deleteButton.textContent = "x";
+
+    deleteButton.addEventListener("click", () => {
+      li.remove();
+
+      taskList.splice(taskList.indexOf(toDo), 1);
+
+      
+    });
+
+    li.appendChild(deleteButton);
+
+    tasks.appendChild(li);
+  });
+}
